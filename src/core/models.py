@@ -28,10 +28,14 @@ class Task(models.Model):
 
 
 class Permission(models.Model):
+    class Meta:
+        unique_together = (('proj_id', 'user_id'),)
+
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     proj_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, choices=(('view', 'View'), ('edit', 'Edit'), ('delete', 'Delete')),
-                            default='view')
+    permit_name = models.CharField(max_length=100, choices=(('view', 'View'), ('edit', 'Edit'), ('delete', 'Delete')),
+                                   default='view')
     desc = models.TextField(null=True, blank=True)
 
     def __str__(self):

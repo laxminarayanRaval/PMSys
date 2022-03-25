@@ -14,7 +14,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'password2',)
+        fields = ('username', 'email', 'password', 'password2', 'name')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -38,13 +38,25 @@ class RegisterSerializer(serializers.ModelSerializer):
         """
 
         user.save()
-
         return user
 
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = (
+        fields = '__all__'
+        """fields = (
             'id', 'name', 'desc', 'project_color_identity', 'created_by',
-        )
+        )"""
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = '__all__'
