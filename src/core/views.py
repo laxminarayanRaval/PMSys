@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import generics, status  # User Register
 
-from .serializers import RegisterSerializer, ProjectSerializer, Project, Task, TaskSerializer, PermissionSerializer
+from .serializers import RegisterSerializer, ProjectSerializer, Project, Task, TaskSerializer, Permission, PermissionSerializer
 from django.contrib.auth.models import User
 
 
@@ -171,6 +171,18 @@ class PermissionView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, *args, **kwargs):
+        try:
+            qs = Permission.objects.get(pk=request.data['id'])
+            if qs:
+                qs.delete()
+                return Response({'status': 'success',
+                                 'msg': f"Task with {request.data['id']} id Deleted Successfully."},
+                                status=status.HTTP_200_OK)
+        except Exception:
+            return Response({'status': 'fail',
+                             'msg': f"Task with {request.data['id']} id Not Found, Failed to Delete."},
+                            status=status.HTTP_404_NOT_FOUND)
 
 """
 extra gyan:

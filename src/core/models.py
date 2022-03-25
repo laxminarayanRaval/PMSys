@@ -39,4 +39,4 @@ class Permission(models.Model):
     desc = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.permit_name
