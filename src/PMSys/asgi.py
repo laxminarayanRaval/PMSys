@@ -1,5 +1,5 @@
 """
-ASGI config for PMSys project.
+ASGI config for PMSys core.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

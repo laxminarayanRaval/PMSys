@@ -1,5 +1,5 @@
 """
-WSGI config for PMSys project.
+WSGI config for PMSys core.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
