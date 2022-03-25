@@ -155,6 +155,15 @@ class TaskView(APIView):
 class PermissionView(APIView):
     permission_classes = (IsAuthenticated, )
 
+    def get(self, request, *args, **kwargs):
+        try:
+            qs = Permission.objects.all()
+            serializer = PermissionSerializer(qs, many=True)
+            return Response(serializer.data)
+        except KeyError:
+            return Response({'status': 'error', 'message': 'project id is required for getting tasks.'},
+                            status=status.HTTP_417_EXPECTATION_FAILED)
+
     def post(self, request, *args, **kwargs):
         serializer = PermissionSerializer(data=request.data)
         try:
@@ -170,6 +179,20 @@ class PermissionView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, *args, **kwargs):
+        try:
+            qs = Permission.objects.get(pk=request.data['id'])
+            serializer = PermissionSerializer(data=request.data, instance=qs)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'status': "success", 'data': serializer.data},
+                                status=status.HTTP_202_ACCEPTED)
+            return Response({'status': 'error', 'data': serializer.errors},
+                            status=status.HTTP_400_BAD_REQUEST)
+        except KeyError:
+            return Response({'status': 'error', 'message': 'task id is required for updating task.'},
+                            status=status.HTTP_417_EXPECTATION_FAILED)
 
     def delete(self, request, *args, **kwargs):
         try:
